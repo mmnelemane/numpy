@@ -769,6 +769,11 @@ datetimetype_str(PyObject *self)
 
     scal = (PyDatetimeScalarObject *)self;
 
+    /* FIXME: This condition check is for ARM servers until a proper fix 
+     * is available for conversion to PyDatetimeScalarObject */
+    if (scal->obval == 0)
+        scal->obval = NPY_DATETIME_NAT;
+    
     if (convert_datetime_to_datetimestruct(&scal->obmeta, scal->obval,
                                                             &dts) < 0) {
         return NULL;
